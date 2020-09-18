@@ -25,6 +25,11 @@ namespace SpaceshooterServer.Hubs
 
             Clients.AllExcept(new string[] { Context.ConnectionId }).SendAsync("ShipAddedtoGame", shipId);
 
+            this.matchState.Players.ToArray().Where(p => p.Id != shipId).ToList().ForEach(player =>
+            {
+                Clients.Client(Context.ConnectionId).SendAsync("ShipAddedtoGame", player.Id);
+            });
+
             return Task.CompletedTask;
         }
 
