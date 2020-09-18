@@ -51,7 +51,7 @@ namespace SpaceshooterServer
 
             app.UseCors(settings =>
             {
-                settings.WithOrigins(new string[] { "https://renanliberato.com.br/spaceshooteronline", "https://renanliberato.com.br/spaceshooteronline/" });
+                settings.WithOrigins(new string[] { "https://renanliberato.com.br" });
                 settings.AllowAnyMethod();
                 settings.AllowCredentials();
                 settings.AllowAnyHeader();
