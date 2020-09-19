@@ -41,5 +41,12 @@ namespace SpaceshooterServer.Hubs
 
             return Task.CompletedTask;
         }
+
+        public Task FireShot(Guid shipId, float x, float y, float angle)
+        {
+            Clients.AllExcept(new string[] { Context.ConnectionId }).SendAsync("ShotFired", shipId, x, y, angle);
+
+            return Task.CompletedTask;
+        }
     }
 }
