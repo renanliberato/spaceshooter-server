@@ -37,12 +37,11 @@ namespace SpaceshooterServer.Hubs
             return Task.CompletedTask;
         }
 
-        public Task UpdateShipPosition(string matchId, Guid shipId, float x, float y, float dx, float dy, float angle, float health)
+        public Task UpdateShipPosition(string matchId, Guid shipId, object properties)
         {
             var match = this.matchList.Matches.First(m => m.MatchId == matchId);
-            match.Players.FirstOrDefault(p => p.Id == shipId)?.UpdatePosition(x, y, dx, dy, angle, health);
 
-            GetOtherMatchConnections(match).SendAsync("ShipPositionUpdated", shipId, x, y, dx, dy, angle, health);
+            GetOtherMatchConnections(match).SendAsync("ShipPositionUpdated", shipId, properties);
 
             return Task.CompletedTask;
         }
