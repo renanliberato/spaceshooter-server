@@ -8,24 +8,28 @@ namespace SpaceshooterServer.Hubs
 {
     public class SimplerMatchHub : Hub
     {
-        private SimplerMatchState matchState;
+        private MatchList matchList;
 
-        public SimplerMatchHub(SimplerMatchState matchState)
+        public SimplerMatchHub(MatchList matchList)
         {
-            this.matchState = matchState;
+            this.matchList = matchList;
         }
 
-        public Task AddShipToGame(Guid shipId)
+        public Task AddShipToGame(string matchId, Guid shipId)
         {
-            this.matchState.Players.Add(new SimplerPlayerState(this.matchState)
+            var match = this.matchList.Matches.First(m => m.MatchId == matchId);
+
+            match.ConnectionIds.Add(Context.ConnectionId);
+
+            match.Players.Add(new SimplerPlayerState(match)
             {
                 Id = shipId,
                 MaxHealth = 10
             });
 
-            Clients.AllExcept(new string[] { Context.ConnectionId }).SendAsync("ShipAddedtoGame", shipId);
+            GetOtherMatchConnections(match).SendAsync("ShipAddedtoGame", shipId);
 
-            this.matchState.Players.ToArray().Where(p => p.Id != shipId).ToList().ForEach(player =>
+            match.Players.ToArray().Where(p => p.Id != shipId).ToList().ForEach(player =>
             {
                 Clients.Client(Context.ConnectionId).SendAsync("ShipAddedtoGame", player.Id);
             });
@@ -33,18 +37,37 @@ namespace SpaceshooterServer.Hubs
             return Task.CompletedTask;
         }
 
-        public Task UpdateShipPosition(Guid shipId, float x, float y, float angle, float health)
+        public Task UpdateShipPosition(string matchId, Guid shipId, float x, float y, float dx, float dy, float angle, float health)
         {
-            this.matchState.Players.FirstOrDefault(p => p.Id == shipId)?.UpdatePosition(x, y, angle, health);
+            var match = this.matchList.Matches.First(m => m.MatchId == matchId);
+            match.Players.FirstOrDefault(p => p.Id == shipId)?.UpdatePosition(x, y, dx, dy, angle, health);
 
-            Clients.AllExcept(new string[] { Context.ConnectionId }).SendAsync("ShipPositionUpdated", shipId, x, y, angle, health);
+            GetOtherMatchConnections(match).SendAsync("ShipPositionUpdated", shipId, x, y, dx, dy, angle, health);
 
             return Task.CompletedTask;
         }
 
-        public Task FireShot(Guid shipId, float x, float y, float angle)
+        public Task FireShot(string matchId, Guid shipId, float x, float y, float angle)
         {
-            Clients.AllExcept(new string[] { Context.ConnectionId }).SendAsync("ShotFired", shipId, x, y, angle);
+            var match = this.matchList.Matches.First(m => m.MatchId == matchId);
+
+            GetOtherMatchConnections(match).SendAsync("ShotFired", shipId, x, y, angle);
+
+            return Task.CompletedTask;
+        }
+
+        private IClientProxy GetOtherMatchConnections(SimplerMatchState match)
+        {
+            return Clients.Clients(match.ConnectionIds.Except(new string[] { Context.ConnectionId }).ToArray());
+        }
+
+        public Task DestroyPlayer(string matchId, Guid shipId)
+        {
+            var match = this.matchList.Matches.First(m => m.MatchId == matchId);
+            match.Players.Remove(match.Players.First(p => p.Id == shipId));
+            match.ConnectionIds = new System.Collections.Concurrent.ConcurrentBag<string>(match.ConnectionIds.Except(new[] { Context.ConnectionId }));
+
+            GetOtherMatchConnections(match).SendAsync("PlayerDestroyed", shipId, match.Players.Count);
 
             return Task.CompletedTask;
         }

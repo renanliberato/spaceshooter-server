@@ -31,10 +31,9 @@ namespace SpaceshooterServer
         {
             services.AddControllers();
             services.AddSignalR();
-            services.AddSingleton<MatchState>();
+            services.AddSingleton<MatchList>();
             services.AddSingleton<SimplerMatchState>();
-            services.AddHostedService<TimedMatchTickService>();
-            services.AddHostedService<TimedSimplerMatchTickService>();
+            //services.AddHostedService<TimedSimplerMatchTickService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +50,7 @@ namespace SpaceshooterServer
 
             app.UseCors(settings =>
             {
-                settings.WithOrigins(new string[] { "https://renanliberato.com.br" });
+                settings.WithOrigins(new string[] { "https://renanliberato.com.br", "http://localhost:1234" });
                 settings.AllowAnyMethod();
                 settings.AllowCredentials();
                 settings.AllowAnyHeader();
