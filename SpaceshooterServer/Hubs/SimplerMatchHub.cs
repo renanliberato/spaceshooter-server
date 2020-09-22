@@ -37,6 +37,15 @@ namespace SpaceshooterServer.Hubs
             return Task.CompletedTask;
         }
 
+        public Task SendEventToOtherPlayers(string matchId, object @event)
+        {
+            var match = this.matchList.Matches.First(m => m.MatchId == matchId);
+
+            GetOtherMatchConnections(match).SendAsync("EventBroadcasted", @event);
+
+            return Task.CompletedTask;
+        }
+
         public Task UpdateShipPosition(string matchId, Guid shipId, object properties)
         {
             var match = this.matchList.Matches.First(m => m.MatchId == matchId);
