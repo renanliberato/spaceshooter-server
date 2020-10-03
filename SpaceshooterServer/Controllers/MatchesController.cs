@@ -28,5 +28,12 @@ namespace SpaceshooterServer.Controllers
 
             return Task.CompletedTask;
         }
+
+        [HttpGet]
+        [Route("list")]
+        public IEnumerable<SimplerMatchState> GetMatches()
+        {
+            return this.matchList.Matches;
+        }
     }
 }
