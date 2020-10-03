@@ -49,6 +49,12 @@ namespace SpaceshooterServer.Models
         [DataMember(Name = "id")]
         public Guid Id { get; set; }
 
+        [DataMember(Name = "connectionId")]
+        public string ConnectionId { get; set; }
+
+        [DataMember(Name = "username")]
+        public string Username { get; set; }
+
         [DataMember(Name = "angle")]
         public float Angle { get; set; }
 

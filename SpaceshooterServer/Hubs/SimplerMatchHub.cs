@@ -17,10 +17,10 @@ namespace SpaceshooterServer.Hubs
 
         public override async Task OnDisconnectedAsync(Exception ex)
         {
-            this.matchList.RemoveConnectionFromMatch(Context.ConnectionId);
+            this.matchList.RemoveConnectionFromMatch(Context.ConnectionId, this);
         }
 
-        public Task AddShipToGame(string matchId, Guid shipId)
+        public Task AddShipToGame(string matchId, Guid shipId, string username)
         {
             var match = this.matchList.Matches.First(m => m.MatchId == matchId);
 
@@ -28,15 +28,19 @@ namespace SpaceshooterServer.Hubs
 
             match.Players.Add(new SimplerPlayerState(match)
             {
+                ConnectionId = Context.ConnectionId,
                 Id = shipId,
+                Username = username,
                 MaxHealth = 10
             });
 
-            GetOtherMatchConnections(match).SendAsync("ShipAddedtoGame", shipId);
+            // notify other players that a new ship entered.
+            GetOtherMatchConnections(match).SendAsync("ShipAddedtoGame", shipId, username);
 
+            // tell the player which other ships are on the game right now.
             match.Players.ToArray().Where(p => p.Id != shipId).ToList().ForEach(player =>
             {
-                Clients.Client(Context.ConnectionId).SendAsync("ShipAddedtoGame", player.Id);
+                Clients.Client(Context.ConnectionId).SendAsync("ShipAddedtoGame", player.Id, player.Username);
             });
 
             return Task.CompletedTask;
@@ -69,7 +73,7 @@ namespace SpaceshooterServer.Hubs
             return Task.CompletedTask;
         }
 
-        private IClientProxy GetOtherMatchConnections(SimplerMatchState match)
+        public IClientProxy GetOtherMatchConnections(SimplerMatchState match)
         {
             return Clients.Clients(match.ConnectionIds.Except(new string[] { Context.ConnectionId }).ToArray());
         }
