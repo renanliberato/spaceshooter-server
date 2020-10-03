@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace SpaceshooterServer.Models
 {
@@ -25,6 +26,7 @@ namespace SpaceshooterServer.Models
         }
     }
 
+    [DataContract]
     public class SimplerPlayerState
     {
         private SimplerMatchState matchState;
@@ -44,13 +46,28 @@ namespace SpaceshooterServer.Models
             this.Health = health;
         }
 
+        [DataMember(Name = "id")]
         public Guid Id { get; set; }
+
+        [DataMember(Name = "angle")]
         public float Angle { get; set; }
+
+        [DataMember(Name = "x")]
         public float X { get; set; }
+
+        [DataMember(Name = "y")]
         public float Y { get; set; }
+
+        [DataMember(Name = "dx")]
         public float Dx { get; set; }
+
+        [DataMember(Name = "dy")]
         public float Dy { get; set; }
+
+        [DataMember(Name = "health")]
         public float Health { get; set; }
+
+        [DataMember(Name = "maxHealth")]
         public float MaxHealth { get; set; }
     }
 }

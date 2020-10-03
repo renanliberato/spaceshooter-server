@@ -15,6 +15,11 @@ namespace SpaceshooterServer.Hubs
             this.matchList = matchList;
         }
 
+        public override async Task OnDisconnectedAsync(Exception ex)
+        {
+            this.matchList.RemoveConnectionFromMatch(Context.ConnectionId);
+        }
+
         public Task AddShipToGame(string matchId, Guid shipId)
         {
             var match = this.matchList.Matches.First(m => m.MatchId == matchId);
