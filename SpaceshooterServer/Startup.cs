@@ -33,6 +33,7 @@ namespace SpaceshooterServer
             services.AddSignalR();
             services.AddSingleton<MatchList>();
             services.AddSingleton<SimplerMatchState>();
+            services.AddSingleton<ChatList>();
             //services.AddHostedService<TimedSimplerMatchTickService>();
         }
 
@@ -63,6 +64,7 @@ namespace SpaceshooterServer
                 endpoints.MapControllers();
                 endpoints.MapHub<MatchHub>("/match");
                 endpoints.MapHub<SimplerMatchHub>("/simplermatchhub");
+                endpoints.MapHub<ChatHub>("/chathub");
             });
         }
     }
