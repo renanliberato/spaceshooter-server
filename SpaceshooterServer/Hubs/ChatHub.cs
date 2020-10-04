@@ -29,7 +29,7 @@ namespace SpaceshooterServer.Hubs
                 Message = message
             });
 
-            GetOtherChatConnections().SendAsync("MessageSent", username, message);
+            GetOtherChatConnections().SendAsync("MessageSent", id, username, message);
         }
 
         public IClientProxy GetOtherChatConnections()
