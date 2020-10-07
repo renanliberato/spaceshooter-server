@@ -20,7 +20,7 @@ namespace SpaceshooterServer.Hubs
             this.matchList.RemoveConnectionFromMatch(Context.ConnectionId, this);
         }
 
-        public Task AddShipToGame(string matchId, Guid shipId, string username)
+        public Task AddShipToGame(string matchId, Guid shipId, string username, string ship)
         {
             var match = this.matchList.Matches.First(m => m.MatchId == matchId);
 
@@ -31,16 +31,17 @@ namespace SpaceshooterServer.Hubs
                 ConnectionId = Context.ConnectionId,
                 Id = shipId,
                 Username = username,
+                Ship = ship,
                 MaxHealth = 10
             });
 
             // notify other players that a new ship entered.
-            GetOtherMatchConnections(match).SendAsync("ShipAddedtoGame", shipId, username);
+            GetOtherMatchConnections(match).SendAsync("ShipAddedtoGame", shipId, username, ship);
 
             // tell the player which other ships are on the game right now.
             match.Players.ToArray().Where(p => p.Id != shipId).ToList().ForEach(player =>
             {
-                Clients.Client(Context.ConnectionId).SendAsync("ShipAddedtoGame", player.Id, player.Username);
+                Clients.Client(Context.ConnectionId).SendAsync("ShipAddedtoGame", player.Id, player.Username, player.Ship);
             });
 
             return Task.CompletedTask;

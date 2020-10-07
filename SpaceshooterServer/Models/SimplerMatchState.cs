@@ -55,6 +55,9 @@ namespace SpaceshooterServer.Models
         [DataMember(Name = "username")]
         public string Username { get; set; }
 
+        [DataMember(Name = "ship")]
+        public string Ship { get; set; }
+
         [DataMember(Name = "angle")]
         public float Angle { get; set; }
 
