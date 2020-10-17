@@ -10,6 +10,8 @@ namespace SpaceshooterServer.Models
         public string MatchId { get; set; }
         public ConcurrentBag<string> ConnectionIds { get; set; } = new ConcurrentBag<string>();
         public List<SimplerPlayerState> Players { get; set; }
+        private Random random;
+        public List<MeteorState> Meteors { get; }
 
         public float MinX { get; set; }
         public float MinY { get; set; }
@@ -23,6 +25,49 @@ namespace SpaceshooterServer.Models
             MaxX = 1000;
             MaxY = 1000;
             Players = new List<SimplerPlayerState>();
+            random = new Random();
+            Meteors = new List<MeteorState> {
+                new MeteorState {
+                    X = random.Next(0, 1000),
+                    Y = random.Next(0, 1000),
+                },
+                new MeteorState {
+                    X = random.Next(0, 1000),
+                    Y = random.Next(0, 1000),
+                },
+                new MeteorState {
+                    X = random.Next(0, 1000),
+                    Y = random.Next(0, 1000),
+                },
+                new MeteorState {
+                    X = random.Next(0, 1000),
+                    Y = random.Next(0, 1000),
+                },
+                new MeteorState {
+                    X = random.Next(0, 1000),
+                    Y = random.Next(0, 1000),
+                },
+                new MeteorState {
+                    X = random.Next(0, 1000),
+                    Y = random.Next(0, 1000),
+                },
+                new MeteorState {
+                    X = random.Next(0, 1000),
+                    Y = random.Next(0, 1000),
+                },
+                new MeteorState {
+                    X = random.Next(0, 1000),
+                    Y = random.Next(0, 1000),
+                },
+                new MeteorState {
+                    X = random.Next(0, 1000),
+                    Y = random.Next(0, 1000),
+                },
+                new MeteorState {
+                    X = random.Next(0, 1000),
+                    Y = random.Next(0, 1000),
+                }
+            };
         }
     }
 
@@ -78,5 +123,14 @@ namespace SpaceshooterServer.Models
 
         [DataMember(Name = "maxHealth")]
         public float MaxHealth { get; set; }
+    }
+
+    [DataContract]
+    public class MeteorState
+    {
+        [DataMember(Name = "x")]
+        public float X { get; set; }
+        [DataMember(Name = "y")]
+        public float Y { get; set; }
     }
 }

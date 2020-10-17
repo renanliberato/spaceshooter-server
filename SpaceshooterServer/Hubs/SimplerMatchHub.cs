@@ -38,6 +38,8 @@ namespace SpaceshooterServer.Hubs
             // notify other players that a new ship entered.
             GetOtherMatchConnections(match).SendAsync("ShipAddedtoGame", shipId, username, ship);
 
+            Clients.Client(Context.ConnectionId).SendAsync("MeteorsAddedToMatch", match.Meteors.ToArray());
+
             // tell the player which other ships are on the game right now.
             match.Players.ToArray().Where(p => p.Id != shipId).ToList().ForEach(player =>
             {
