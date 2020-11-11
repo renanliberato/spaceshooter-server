@@ -31,8 +31,7 @@ namespace SpaceshooterServer.Hubs
                 ConnectionId = Context.ConnectionId,
                 Id = shipId,
                 Username = username,
-                Ship = ship,
-                MaxHealth = 10
+                Ship = ship
             });
 
             // notify other players that a new ship entered.

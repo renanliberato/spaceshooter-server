@@ -22,50 +22,50 @@ namespace SpaceshooterServer.Models
         {
             MinX = 0;
             MinY = 0;
-            MaxX = 1000;
-            MaxY = 1000;
+            MaxX = 2000;
+            MaxY = 2000;
             Players = new List<SimplerPlayerState>();
             random = new Random();
             Meteors = new List<MeteorState> {
                 new MeteorState {
-                    X = random.Next(0, 1000),
-                    Y = random.Next(0, 1000),
+                    X = random.Next(0, 2000),
+                    Y = random.Next(0, 2000),
                 },
                 new MeteorState {
-                    X = random.Next(0, 1000),
-                    Y = random.Next(0, 1000),
+                    X = random.Next(0, 2000),
+                    Y = random.Next(0, 2000),
                 },
                 new MeteorState {
-                    X = random.Next(0, 1000),
-                    Y = random.Next(0, 1000),
+                    X = random.Next(0, 2000),
+                    Y = random.Next(0, 2000),
                 },
                 new MeteorState {
-                    X = random.Next(0, 1000),
-                    Y = random.Next(0, 1000),
+                    X = random.Next(0, 2000),
+                    Y = random.Next(0, 2000),
                 },
                 new MeteorState {
-                    X = random.Next(0, 1000),
-                    Y = random.Next(0, 1000),
+                    X = random.Next(0, 2000),
+                    Y = random.Next(0, 2000),
                 },
                 new MeteorState {
-                    X = random.Next(0, 1000),
-                    Y = random.Next(0, 1000),
+                    X = random.Next(0, 2000),
+                    Y = random.Next(0, 2000),
                 },
                 new MeteorState {
-                    X = random.Next(0, 1000),
-                    Y = random.Next(0, 1000),
+                    X = random.Next(0, 2000),
+                    Y = random.Next(0, 2000),
                 },
                 new MeteorState {
-                    X = random.Next(0, 1000),
-                    Y = random.Next(0, 1000),
+                    X = random.Next(0, 2000),
+                    Y = random.Next(0, 2000),
                 },
                 new MeteorState {
-                    X = random.Next(0, 1000),
-                    Y = random.Next(0, 1000),
+                    X = random.Next(0, 2000),
+                    Y = random.Next(0, 2000),
                 },
                 new MeteorState {
-                    X = random.Next(0, 1000),
-                    Y = random.Next(0, 1000),
+                    X = random.Next(0, 2000),
+                    Y = random.Next(0, 2000),
                 }
             };
         }
@@ -81,16 +81,6 @@ namespace SpaceshooterServer.Models
             this.matchState = matchState;
         }
 
-        internal void UpdatePosition(float x, float y, float dx, float dy, float angle, float health)
-        {
-            this.X = x;
-            this.Y = y;
-            this.Dx = dx;
-            this.Dy = dy;
-            this.Angle = angle;
-            this.Health = health;
-        }
-
         [DataMember(Name = "id")]
         public Guid Id { get; set; }
 
@@ -103,26 +93,8 @@ namespace SpaceshooterServer.Models
         [DataMember(Name = "ship")]
         public string Ship { get; set; }
 
-        [DataMember(Name = "angle")]
-        public float Angle { get; set; }
-
-        [DataMember(Name = "x")]
-        public float X { get; set; }
-
-        [DataMember(Name = "y")]
-        public float Y { get; set; }
-
-        [DataMember(Name = "dx")]
-        public float Dx { get; set; }
-
-        [DataMember(Name = "dy")]
-        public float Dy { get; set; }
-
-        [DataMember(Name = "health")]
-        public float Health { get; set; }
-
-        [DataMember(Name = "maxHealth")]
-        public float MaxHealth { get; set; }
+        [DataMember(Name = "score")]
+        public float Score { get; set; }
     }
 
     [DataContract]
