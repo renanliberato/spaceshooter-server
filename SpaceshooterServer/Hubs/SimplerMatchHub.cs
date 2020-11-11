@@ -38,6 +38,8 @@ namespace SpaceshooterServer.Hubs
             GetOtherMatchConnections(match).SendAsync("ShipAddedtoGame", shipId, username, ship);
 
             Clients.Client(Context.ConnectionId).SendAsync("MeteorsAddedToMatch", match.Meteors.ToArray());
+            Clients.Client(Context.ConnectionId).SendAsync("PlanetsAddedToMatch", match.Planets.ToArray());
+            Clients.Client(Context.ConnectionId).SendAsync("StarsAddedToMatch", match.Stars.ToArray());
 
             // tell the player which other ships are on the game right now.
             match.Players.ToArray().Where(p => p.Id != shipId).ToList().ForEach(player =>
